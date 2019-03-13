@@ -1,0 +1,41 @@
+{
+  "name": "event-booking-api",
+  "version": "1.0.0",
+  "description": "event booking api",
+  "scripts": {
+    "dev": "nodemon server/app.ts"
+  },
+  "dependencies": {
+    "@types/mongoose": "^5.2.19",
+    "@types/node": "^10.11.7",
+    "compression": "^1.7.3",
+    "connect-mongo": "^2.0.0",
+    "cors": "^2.8.4",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "front-matter": "^3.0.0",
+    "handlebars": "^4.0.12",
+    "he": "^1.2.0",
+    "helmet": "^3.14.0",
+    "isomorphic-unfetch": "^3.0.0",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.3.3",
+    "passport": "^0.4.0",
+    "qs": "^6.5.2",
+    "request": "^2.88.0",
+    "winston": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.0",
+    "@types/handlebars": "^4.0.39",
+    "@types/lodash": "^4.14.117",
+    "@types/passport": "^0.4.6",
+    "husky": "^1.1.2",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.9",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.3.3333"
+  }
+}
