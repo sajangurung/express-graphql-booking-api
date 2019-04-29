@@ -3,6 +3,15 @@ import User from '../models/User';
 
 const router = express.Router();
 
+const getUsers = async (_, res, next) => {
+  try {
+    const users = await User.getAll();
+    res.json({data: users});
+  } catch (err) {
+    next(err);
+  }
+};
+
 const createUser = async (req, res, next) => {
   try {
     const { id } = await User.createProfile(req.body);
@@ -26,6 +35,7 @@ const updateUser = async (req, res, next) => {
 };
 
 // Routes
+router.get('/', getUsers);
 router.post('/', createUser);
 router.put('/', updateUser);
 export default router;

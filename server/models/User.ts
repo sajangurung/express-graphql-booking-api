@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import * as _ from 'lodash';
 import * as mongoose from 'mongoose';
 
@@ -18,6 +19,10 @@ const mongoSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  password: {
+    type: String,
+    required: true,
+  },
   isAdmin: {
     type: Boolean,
     default: false,
@@ -30,6 +35,7 @@ export interface IUserDocument extends mongoose.Document {
   slug: string;
   createdAt: Date;
   email: string;
+  password: string;
   isAdmin: boolean;
   displayName: string;
   avatarUrl: string;
@@ -38,29 +44,36 @@ export interface IUserDocument extends mongoose.Document {
 interface IUserModel extends mongoose.Model<IUserDocument> {
   publicFields(): string[];
 
+  getAll(): Promise<IUserDocument>;
+
   updateProfile({
     email,
     name,
     avatarUrl,
   }: {
   email: string;
-  phone: string;
   name: string;
   avatarUrl: string;
   }): Promise<IUserDocument[]>;
 
   createProfile({
     email,
-    name,
-    avatarUrl,
+    displayName,
+    password,
   }: {
   email: string;
-  name: string,
-  avatarUrl: string
+  displayName: string,
+  password: string;
   }): Promise<IUserDocument>;
 }
 
 class UserClass extends mongoose.Model {
+  public static async getAll() {
+    const users = await this.find();
+
+    return users.map(user => _.pick(user, this.publicFields()));
+  }
+
   public static async updateProfile({ userId, name, avatarUrl }) {
 
     const user = await this.findById(userId, 'slug displayName');
@@ -81,15 +94,17 @@ class UserClass extends mongoose.Model {
       .setOptions({ lean: true });
   }
 
-  public static async createProfile({ email, displayName, avatarUrl }) {
+  public static async createProfile({ email, displayName, password }) {
 
     const slug = await generateSlug(this, displayName);
+
+    const hash = bcrypt.hashSync(password, 10);
 
     const newUser = await this.create({
       createdAt: new Date(),
       email,
       displayName,
-      avatarUrl,
+      password: hash,
       slug,
     });
 
