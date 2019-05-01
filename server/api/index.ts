@@ -3,6 +3,7 @@ import * as express from 'express';
 import logger from '../logs';
 
 import eventApi from './event';
+import graphqlApi from './graphql';
 import userApi from './user';
 
 function handleError(err, _, res, __) {
@@ -14,4 +15,5 @@ function handleError(err, _, res, __) {
 export default function api(server: express.Express) {
   server.use('/api/v1/users', userApi, handleError);
   server.use('/api/v1/events', eventApi, handleError);
+  server.use('/graphql', graphqlApi, handleError);
 }

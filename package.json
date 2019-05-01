@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "event booking api",
   "scripts": {
-    "dev": "nodemon server/app.ts"
+    "dev": "nodemon server/app.ts",
+    "test": "jest"
   },
   "dependencies": {
     "@types/mongoose": "^5.2.19",
@@ -14,8 +15,10 @@
     "cors": "^2.8.4",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
+    "express-graphql": "^0.8.0",
     "express-session": "^1.15.6",
     "front-matter": "^3.0.0",
+    "graphql": "^14.2.1",
     "handlebars": "^4.0.12",
     "he": "^1.2.0",
     "helmet": "^3.14.0",
