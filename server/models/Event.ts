@@ -132,6 +132,7 @@ class EventClass extends mongoose.Model {
       'label',
       'length',
       'maxPeople',
+      'createdAt',
     ];
   }
 }

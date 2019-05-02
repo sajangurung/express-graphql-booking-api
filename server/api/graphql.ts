@@ -31,7 +31,7 @@ const graphqlApi = graphql({
     }
 
     type RootMutation {
-      createEvent(eventInput: EventInput): String
+      createEvent(eventInput: EventInput): Event
     }
 
     schema {
@@ -41,14 +41,14 @@ const graphqlApi = graphql({
   `),
   rootValue: {
     events: () => {
-      return ['events', 'test'];
+      return Event.getAll();
     },
     createEvent: (args: any) => {
       const eventInput = args.eventInput;
 
       return Event.createEvent(eventInput)
         .then(response => {
-          return response._id;
+          return response;
         }).catch(error => {
           throw error;
         });
