@@ -23,6 +23,14 @@ export const rootSchema = buildSchema(`
     events: [Event!]
   }
 
+  type Booking {
+    _id: ID!
+    user: ID!
+    event: ID!
+    createdAt: String!
+    updatedAt: String!
+  }
+
   input EventInput {
     userId: String!
     title: String!
@@ -39,6 +47,11 @@ export const rootSchema = buildSchema(`
     password: String!
   }
 
+  input BookingInput {
+    user: ID!
+    event: ID!
+  }
+
   type RootQuery {
     events: [Event!]!
     users: [User!]!
@@ -47,6 +60,9 @@ export const rootSchema = buildSchema(`
 
   type RootMutation {
     createEvent(eventInput: EventInput): Event
+    createUser(input: UserInput): User
+    createBooking(input: BookingInput): Booking
+    cancelBooking(bookingId: ID!): Booking
   }
 
   schema {
