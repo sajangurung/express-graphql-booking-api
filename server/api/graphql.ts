@@ -1,6 +1,7 @@
 import * as graphql from 'express-graphql';
 import { buildSchema } from 'graphql';
 import Event from '../../server/models/Event';
+import User from '../../server/models/User';
 
 const graphqlApi = graphql({
   schema: buildSchema(`
@@ -14,6 +15,16 @@ const graphqlApi = graphql({
       length: String!
       maxPeople: Int!
       createdAt: String!
+      user: User!
+    }
+
+    type User {
+      _id: ID!
+      displayName: String
+      email: String
+      avatarUrl: String
+      slug: String
+      events: [Event!]
     }
 
     input EventInput {
@@ -26,8 +37,16 @@ const graphqlApi = graphql({
       maxPeople: Int!
     }
 
+    input UserInput {
+      displayName: String!
+      email: String!
+      password: String!
+    }
+
     type RootQuery {
       events: [Event!]!
+      users: [User!]!
+      user: User!
     }
 
     type RootMutation {
@@ -43,16 +62,32 @@ const graphqlApi = graphql({
     events: () => {
       return Event.getAll();
     },
-    createEvent: (args: any) => {
+    users: async () => {
+      return await User.getAll();
+    },
+    user: async (id: string) => {
+      return await User.findById(id);
+    },
+    createEvent: async (args: any) => {
       const eventInput = args.eventInput;
 
-      return Event.createEvent(eventInput)
-        .then(response => {
-          return response;
-        }).catch(error => {
-          throw error;
-        });
+      try {
+        const event = await Event.createEvent(eventInput);
+        return event;
 
+      } catch (err) {
+        throw err;
+      }
+    },
+    createUser: async (args: any) => {
+      const input = args.input;
+
+      try {
+        const user = await User.createProfile(input);
+        return user;
+      } catch (err) {
+        throw err;
+      }
     },
   },
   graphiql: true,

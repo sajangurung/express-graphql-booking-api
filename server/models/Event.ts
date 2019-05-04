@@ -1,6 +1,7 @@
 
 import * as _ from 'lodash';
 import * as mongoose from 'mongoose';
+import User from './User';
 
 const mongoSchema = new mongoose.Schema({
   createdAt: {
@@ -8,8 +9,9 @@ const mongoSchema = new mongoose.Schema({
     required: true,
   },
   userId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
+    ref: 'User',
   },
   title: {
     type: String,
@@ -116,9 +118,20 @@ class EventClass extends mongoose.Model {
   }
 
   public static async getAll() {
-    return await this.find()
-      .select(this.publicFields().join(' '))
-      .setOptions({ lean: true });
+    const findUser = async userId => {
+      return await User.findById(userId);
+    };
+
+    const events = await this.find()
+                      .select(this.publicFields().join(' '))
+                      .setOptions({ lean: true });
+
+    return events.map(event => {
+      return {
+        ...event,
+        user: findUser.bind(this, event.userId),
+      };
+    });
   }
 
   public static publicFields(): string[] {

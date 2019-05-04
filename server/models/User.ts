@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import * as mongoose from 'mongoose';
 
 import { generateSlug } from '../utils/slugify';
+import Event from './Event';
 
 const mongoSchema = new mongoose.Schema({
   slug: {
@@ -69,9 +70,21 @@ interface IUserModel extends mongoose.Model<IUserDocument> {
 
 class UserClass extends mongoose.Model {
   public static async getAll() {
-    const users = await this.find();
 
-    return users.map(user => _.pick(user, this.publicFields()));
+    const findEvents = async userId => {
+      return await Event.find({userId});
+    };
+
+    const users = await this.find()
+                    .select(this.publicFields().join(' '))
+                    .setOptions({ lean: true });
+
+    return users.map(user => {
+      return {
+        ...user,
+        events: findEvents.bind(this, user._id),
+      };
+    });
   }
 
   public static async updateProfile({ userId, name, avatarUrl }) {
