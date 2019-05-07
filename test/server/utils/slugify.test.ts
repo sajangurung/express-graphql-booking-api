@@ -1,4 +1,4 @@
-import generateSlug from '../../../server/utils/slugify.ts';
+import { generateSlug } from '../../../server/utils/slugify';
 
 const MockUser = {
   slugs: ['john-and-jonhson', 'john-and-jonhson-1', 'john'],
@@ -15,7 +15,7 @@ describe('slugify', () => {
   test('not duplicated', () => {
     expect.assertions(1);
 
-    return generateSlug(MockUser, 'John J Jonhson@#$').then((slug) => {
+    return generateSlug(MockUser, 'John J Jonhson@#$').then(slug => {
       expect(slug).toBe('john-j-jonhson');
     });
   });
@@ -23,7 +23,7 @@ describe('slugify', () => {
   test('one time duplicated', () => {
     expect.assertions(1);
 
-    return generateSlug(MockUser, ' John@#$').then((slug) => {
+    return generateSlug(MockUser, ' John@#$').then(slug => {
       expect(slug).toBe('john-1');
     });
   });
@@ -31,7 +31,7 @@ describe('slugify', () => {
   test('multiple duplicated', () => {
     expect.assertions(1);
 
-    return generateSlug(MockUser, 'John & Jonhson@#$').then((slug) => {
+    return generateSlug(MockUser, 'John & Jonhson@#$').then(slug => {
       expect(slug).toBe('john-and-jonhson-2');
     });
   });

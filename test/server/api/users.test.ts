@@ -1,4 +1,5 @@
 import User from '../../../server/models/User';
+
 describe('User', () => {
 
   describe('Create', () => {
