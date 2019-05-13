@@ -6,13 +6,15 @@ import * as express from 'express';
 import * as session from 'express-session';
 import * as helmet from 'helmet';
 import * as mongoose from 'mongoose';
+import * as passport from 'passport';
 import * as path from 'path';
+
+dotenv.config();
 
 import api from './api';
 
+import passportConfig from './config/passport';
 import logger from './logs';
-
-dotenv.config();
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 8000;
@@ -68,7 +70,10 @@ if (!dev) {
 const sessionMiddleware = session(sessionOptions);
 server.use(sessionMiddleware);
 
-api(server);
+passportConfig(passport);
+server.use(passport.initialize());
+
+api(server, passport);
 
 server.get('/robots.txt', (_, res) => {
   res.sendFile(path.join(__dirname, '../static', 'robots.txt'));

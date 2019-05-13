@@ -4,7 +4,7 @@
   "description": "event booking api",
   "scripts": {
     "dev": "nodemon server/app.ts",
-    "test": "jest"
+    "test": "jest --coverage --detectOpenHandles"
   },
   "dependencies": {
     "@types/mongoose": "^5.2.19",
@@ -42,8 +42,10 @@
     "@types/passport": "^0.4.6",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.4.2",
+    "chai": "^4.2.0",
     "husky": "^1.1.2",
     "jest": "^23.6.0",
+    "mocha": "^6.1.4",
     "nodemon": "^1.18.9",
     "ts-jest": "^24.0.2",
     "ts-node": "^7.0.1",
