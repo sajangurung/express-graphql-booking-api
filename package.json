@@ -19,7 +19,7 @@
     "express-session": "^1.15.6",
     "front-matter": "^3.0.0",
     "graphql": "^14.2.1",
-    "handlebars": "^4.0.12",
+    "handlebars": "^4.5.3",
     "he": "^1.2.0",
     "helmet": "^3.14.0",
     "isomorphic-unfetch": "^3.0.0",
